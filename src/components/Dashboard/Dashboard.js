@@ -1,19 +1,25 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import {connect} from 'react-redux'
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
     constructor(){
         super()
 
         this.state = {
             searchInput: '',
             userPosts: true,
-            myPosts: []
+            posts: []
         }
     }
 
     componentDidMount(){
-        axios.get(`/api/posts/?${this.state.userPosts}&${this.state.searchInput}`)
+        axios.get(`/api/posts/${this.props.user_id}`)
+        .then(res => {
+            this.setState({
+                posts:res.data
+            })
+        })
     }
 
     updateSearch(val){
@@ -30,7 +36,7 @@ export default class Dashboard extends Component {
 
     render() {
         console.log(this.state.userPosts)
-        let mappedPosts = this.state.myPosts.map( (post,i) => {
+        let mappedPosts = this.state.posts.map( (post,i) => {
             return(
                 <div key={i}>
                     <h2>post.title</h2>
@@ -49,3 +55,11 @@ export default class Dashboard extends Component {
         )
     }
 }
+
+function mapStateToProps(state){
+    return {
+        id: state.id
+    }
+}
+
+export default connect(mapStateToProps)(Dashboard)

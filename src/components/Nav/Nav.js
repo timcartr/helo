@@ -1,7 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import axios from 'axios'
 
 function Nav(props) {
+    function logout(){
+        axios.post('/api/auth/logout')
+        .then(res => {
+            
+        })
+    }
     let conditionalRender = () => {
         if(props.location.pathname !== '/'){
             return(
@@ -10,7 +17,7 @@ function Nav(props) {
                     <p>{props.username}</p>
                     <button>Home</button>
                     <button>New Post</button>
-                    <button>Logout</button>
+                    <button onClick={ () => logout()}>Logout</button>
                 </div>
             )
         }
